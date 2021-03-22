@@ -17,8 +17,14 @@ namespace TutorMeFMI.App.Auth
         [HttpPost]
         public IActionResult Register([FromBody] RegisterRequest request)
         {
-            repository.AddUser(request);
-            return Json(new {foo = "foo", bar = "bar"});
+            var id = repository.AddUser(request);
+            if (id <= 0) return BadRequest();
+            return Json(new
+            {
+                id,
+                request.email,
+                request.name
+            });
         }
         
         [ValidateModel]
