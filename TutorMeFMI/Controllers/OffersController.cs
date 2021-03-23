@@ -16,7 +16,7 @@ namespace TutorMeFMI.Controllers
         public IEnumerable<Offer> GetUserOffers(int userId)
         {
             using var database = new Database().GetQueryFactory();
-            var offers = database.Query("offer").Where("user", "=", userId).Get<Offer>();
+            var offers = database.Query("offer").Where("user_id", "=", userId).Get<Offer>();
             return offers;
         }
     }

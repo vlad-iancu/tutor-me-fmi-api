@@ -16,7 +16,7 @@ namespace TutorMeFMI.Controllers
         public IEnumerable<Request> GetUserRequests(int userId)
         {
             using var database = new Database().GetQueryFactory();
-            var requests = database.Query("request").Where("user", "=", userId).Get<Request>();
+            var requests = database.Query("request").Where("user_id", "=", userId).Get<Request>();
             return requests;
         }
     }
