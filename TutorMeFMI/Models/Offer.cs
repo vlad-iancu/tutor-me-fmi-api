@@ -18,7 +18,7 @@ namespace TutorMeFMI.Models
         
         public string MeetingSpecifications { get; set; }
 
-        public int UserId { get; set; }
+        public int user_id { get; set; }
 
         public virtual DbUser User { get; set; }
     }

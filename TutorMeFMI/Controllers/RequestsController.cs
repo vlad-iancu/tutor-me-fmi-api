@@ -13,11 +13,11 @@ namespace TutorMeFMI.Controllers
          * param @userId = int value representing the id of the user to retrieve the requests for
          * Returns a list of type Request containing the retrieved requests
          */        
-        public IEnumerable<Request> GetUserRequests(int userId)
+        public IActionResult UserReqs(int userId)
         {
             using var database = new Database().GetQueryFactory();
             var requests = database.Query("request").Where("user_id", "=", userId).Get<Request>();
-            return requests;
+            return View();
         }
     }
 }

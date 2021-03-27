@@ -13,11 +13,11 @@ namespace TutorMeFMI.Controllers
          * param @userId = int value representing the id of the user to retrieve the offers for
          * Returns a list of type Offer containing the retrieved offers
          */
-        public IEnumerable<Offer> GetUserOffers(int userId)
+        public IActionResult UserOfs(int userId)
         {
             using var database = new Database().GetQueryFactory();
             var offers = database.Query("offer").Where("user_id", "=", userId).Get<Offer>();
-            return offers;
+            return View();
         }
     }
 }
