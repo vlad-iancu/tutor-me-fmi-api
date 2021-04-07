@@ -29,4 +29,8 @@
       <Content Remove="Views\Home\**" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
 </Project>
