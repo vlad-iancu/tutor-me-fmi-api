@@ -13,4 +13,24 @@
       <PackageReference Include="SqlKata.Execution" Version="2.3.2" />
     </ItemGroup>
 
+    <ItemGroup>
+      <Compile Remove="Views\Home\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <EmbeddedResource Remove="Views\Home\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <None Remove="Views\Home\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Content Remove="Views\Home\**" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <Folder Include="Models" />
+    </ItemGroup>
+
 </Project>
