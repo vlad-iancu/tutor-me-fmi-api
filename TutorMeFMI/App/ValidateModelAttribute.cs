@@ -10,7 +10,6 @@ namespace TutorMeFMI.App
             if (!context.ModelState.IsValid)
             {
                 context.Result = new BadRequestObjectResult(context.ModelState);
-                
             }
         }
     }
