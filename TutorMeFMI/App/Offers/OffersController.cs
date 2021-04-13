@@ -20,8 +20,8 @@ namespace TutorMeFMI.App.Offers
         public IActionResult List(User user)
         {
             using var database = new Database().GetQueryFactory();
-            var requests = database.Query("offer").Where("userId", "=", user.Id).Get<Request>();
-            return Json(new {requests});
+            var offers = database.Query("offer").Where("userId", "=", user.Id).Get<Offer>();
+            return Json(new {offers});
         }
         [HttpPost]
         [Authorization]

@@ -34,7 +34,10 @@ namespace TutorMeFMI.App.Auth
             var user = repository.GetUser(request.email, request.password);
             if (user == null) return NotFound(new {message = "User does not exist"});
             var token = JwtUtils.GenerateUserToken(user);
-            return Json(new {token});
+            return Json(new
+            {
+                token, id = user.Id
+            });
         }
     }
 }
