@@ -15,31 +15,43 @@ namespace TutorMeFMI.App.Offers
          * param @userId = int value representing the id of the user to retrieve the offers for
          * Returns a list of type Offer containing the retrieved offers
          */
+        public readonly string[] OfferProjection =
+        {
+            "request.id", "title", "description", "price", "meetingType", "meetingSpecifications", "userId",
+            "subject.name as subjectName", "subject.id as subjectId"
+        };
+
         [HttpGet]
         [Authorization]
         public IActionResult List(User user)
         {
             using var database = new Database().GetQueryFactory();
-            var offers = database.Query("offer").Where("userId", "=", user.Id).Get<Offer>();
+            var offers = database.Query("offer")
+                .Join("subject", "subject.id", "offer.subjectId")
+                .Select(OfferProjection)
+                .Where("userId", "=", user.Id).Get();
             return Json(new {offers});
         }
+
         [HttpPost]
         [Authorization]
         [ValidateModel]
-        public IActionResult Add(User user, [FromBody] Offer request)
+        public IActionResult Add(User user, [FromBody] Offer offer)
         {
             using var database = new Database().GetQueryFactory();
             var requestId = database.Query("offer").InsertGetId<int>(new
             {
-                title = request.Title,
-                description = request.Description,
-                price = request.Price,
-                meetingType = request.MeetingType,
-                meetingSpecifications = request.MeetingSpecifications,
-                userId = user.Id
+                title = offer.Title,
+                description = offer.Description,
+                price = offer.Price,
+                meetingType = offer.MeetingType,
+                meetingSpecifications = offer.MeetingSpecifications,
+                userId = user.Id,
+                subjectId = offer.SubjectId
             });
-            request.Id = requestId;
-            return Json(new {request});
+            offer.UserId = user.Id;
+            offer.Id = requestId;
+            return Json(new {offer});
         }
     }
 }

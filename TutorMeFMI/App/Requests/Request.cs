@@ -1,4 +1,5 @@
 ﻿using System.ComponentModel.DataAnnotations;
+using TutorMeFMI.App;
 using TutorMeFMI.App.Auth.Model;
 
 namespace TutorMeFMI.Models
@@ -24,6 +25,10 @@ namespace TutorMeFMI.Models
         [SqlKata.Column("meetingSpecifications")]
         [Required(ErrorMessage = "The mentoring request needs to have meetingSpecifications")]
         public string MeetingSpecifications { get; set; }
+        
+        [SqlKata.Column("subjectId")]
+        [Required(ErrorMessage = "The mentoring request needs to have a subjectId")]
+        public int SubjectId { get; set; }
         
         [SqlKata.Column("userId")]
         public int UserId { get; set; }
