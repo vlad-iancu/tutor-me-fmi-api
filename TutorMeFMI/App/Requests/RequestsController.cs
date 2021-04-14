@@ -11,15 +11,30 @@ namespace TutorMeFMI.App.Requests
     {
         /**
          * GET method that returns all the existing requests posted by an user
-         * param @userId = int value representing the id of the user to retrieve the requests for
+         * param @user = User entity representing the user to retrieve the requests for
          * Returns a list of type Request containing the retrieved requests
          */
         [HttpGet]
         [Authorization]
-        public IActionResult List(User user)
+        public IActionResult UserReqs(User user)
         {
             using var database = new Database().GetQueryFactory();
             var requests = database.Query("request").Where("email", "=", user.Email).Get<Request>();
+            return Json(new {requests});
+        }
+        
+        /**
+         * GET method that returns all the existing requests posted by all the other users
+         * other than @user itself
+         * param @user = User entity representing the user to retrieve the global requests for
+         * Returns a list of type Request containing the retrieved requests
+         */
+        [HttpGet]
+        [Authorization]
+        public IActionResult AllReqs(User user)
+        {
+            using var database = new Database().GetQueryFactory();
+            var requests = database.Query("request").Where("email", "!=", user.Email).Get<Request>();
             return Json(new {requests});
         }
     }
