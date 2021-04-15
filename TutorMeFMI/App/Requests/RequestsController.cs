@@ -10,16 +10,18 @@ namespace TutorMeFMI.App.Requests
 {
     public class RequestsController : Controller
     {
-        /**
-         * GET method that returns all the existing requests posted by an user
-         * param @userId = int value representing the id of the user to retrieve the requests for
-         * Returns a list of type Request containing the retrieved requests
-         */
+
         public readonly string[] RequestProjection = 
         {
             "request.id","title","description","price","meetingType","meetingSpecifications", "userId",
             "subject.name as subjectName", "subject.id as subjectId"
         };
+        
+        /**
+         * GET method that returns all the existing requests posted by an user
+         * param @user = User entity representing the user to retrieve the requests for
+         * Returns a list of type Request containing the retrieved requests
+         */
         [HttpGet]
         [Authorization]
         public IActionResult List(User user)
@@ -31,6 +33,31 @@ namespace TutorMeFMI.App.Requests
                 .Where("userId", "=", user.Id).Get();
             return Json(new {requests});
         }
+        
+        /**
+         * GET method that returns all the existing requests posted by the other users
+         * (other than @user itself)
+         * param @user = User entity representing the user to retrieve the global requests for
+         * Returns a list of type Request containing the retrieved requests
+         */
+        [HttpGet]
+        [Authorization]
+        public IActionResult ListAll(User user)
+        {
+            using var database = new Database().GetQueryFactory();
+            var requests = database.Query("request")
+                .Join("subject", "subject.id","request.subjectId")
+                .Select(RequestProjection)
+                .Where("userId", "!=", user.Id).Get();
+            return Json(new {requests});
+        }
+        
+
+        /**
+         * POST method that adds a new request in the system
+         * param @user = User entity representing the user that posts the request
+         * Returns a new Request with the given parameters 
+         */
         [HttpPost]
         [Authorization]
         [ValidateModel]
