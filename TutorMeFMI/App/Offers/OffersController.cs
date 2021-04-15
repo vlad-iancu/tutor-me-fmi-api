@@ -17,7 +17,7 @@ namespace TutorMeFMI.App.Offers
          */
         public readonly string[] OfferProjection =
         {
-            "request.id", "title", "description", "price", "meetingType", "meetingSpecifications", "userId",
+            "offer.id", "title", "description", "price", "meetingType", "meetingSpecifications", "userId",
             "subject.name as subjectName", "subject.id as subjectId"
         };
 
