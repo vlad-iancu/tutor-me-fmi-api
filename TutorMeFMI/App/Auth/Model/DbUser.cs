@@ -13,6 +13,8 @@ namespace TutorMeFMI.App.Auth.Model
 
         [SqlKata.Column("password")]
         public string Password { get; set; }
+        [SqlKata.Column("profilePath")]
+        public string ProfilePath { get; set; }
 
         public static implicit operator DbUser(RegisterRequest request)
         {

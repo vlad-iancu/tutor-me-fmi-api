@@ -6,6 +6,7 @@ CREATE TABLE user(
                      id INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
                      email VARCHAR(128) UNIQUE,
                      password VARCHAR(128),
+                     profilePath VARCHAR(128),
                      name VARCHAR(128)
 );
 CREATE TABLE subject(
