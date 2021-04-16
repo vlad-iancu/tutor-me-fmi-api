@@ -1,4 +1,7 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using System.IO;
+using Google.Apis.Auth.OAuth2;
+using Google.Cloud.Storage.V1;
+using Microsoft.AspNetCore.Mvc;
 using TutorMeFMI.App.Auth.Dal;
 using TutorMeFMI.App.Auth.Model;
 
@@ -26,7 +29,7 @@ namespace TutorMeFMI.App.Auth
                 request.name
             });
         }
-        
+
         [ValidateModel]
         [HttpPost]
         public IActionResult Login([FromBody] LoginRequest request)
@@ -38,6 +41,15 @@ namespace TutorMeFMI.App.Auth
             {
                 token, id = user.Id
             });
+        }
+
+        [HttpGet]
+        [Authorization]
+        public IActionResult Profile(User user)
+        {
+            var storage = new Storage();
+            storage.UploadSampleFile();
+            return Json(new {user = new {email = user.Email, name = user.Name, url = storage.GetSampleDownloadUrl()}});
         }
     }
 }
