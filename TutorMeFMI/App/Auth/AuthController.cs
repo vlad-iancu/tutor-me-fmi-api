@@ -64,6 +64,7 @@ namespace TutorMeFMI.App.Auth
             var nameParts = newPhoto.FileName.Split(".");
             string extension = "";
             if (nameParts.Length == 2) extension = "." + nameParts[1];
+            storage.DeleteFile(user.ProfilePath);
             storage.UploadFile($"profile_photos/{user.Id}{extension}", newPhoto.OpenReadStream());
             using var database = new Database().GetQueryFactory();
             database.Query("user").Where("id", user.Id).Update(new {profilePath = $"profile_photos/{user.Id}{extension}"});
