@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using System;
+using System.Linq;
 using Microsoft.AspNetCore.Mvc;
 using SqlKata.Execution;
 using TutorMeFMI.App.Auth;
@@ -77,6 +78,32 @@ namespace TutorMeFMI.App.Requests
             request.Id = requestId;
             request.UserId = user.Id;
             return Json(new {request});
+        }
+        [HttpDelete]
+        [Authorization]
+        public IActionResult Delete(User user, int id)
+        {
+            using var database = new Database().GetQueryFactory();
+            var deleted = database.Query("request").Where("id", id).Delete();
+            return Json(new {success = deleted > 0});
+        }
+        
+        [HttpPut]
+        [Authorization]
+        public IActionResult Update(User user, [FromBody] Request request)
+        {
+            var updateObject = new System.Collections.Generic.Dictionary<String, object>();
+            if (request.Id <= 0) return BadRequest("Id must ne non-null and greater than zero");
+            if (!String.IsNullOrEmpty(request.Title)) updateObject.Add("title", request.Title);
+            if (!String.IsNullOrEmpty(request.Description)) updateObject.Add("description", request.Description);
+            if (!String.IsNullOrEmpty(request.MeetingType)) updateObject.Add("meetingType", request.MeetingType);
+            if (!String.IsNullOrEmpty(request.MeetingSpecifications)) updateObject.Add("meetingSpecifications", request.MeetingSpecifications);
+            if (request.Price > 0) updateObject.Add("price", request.Price);
+            if (request.SubjectId > 0) updateObject.Add("subjectId", request.SubjectId);
+            using var database = new Database().GetQueryFactory();
+            database.Query("request").Where("id", request.Id).Update(updateObject);
+
+            return Json(new {success = true});
         }
     }
 }
