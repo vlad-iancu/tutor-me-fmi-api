@@ -68,6 +68,7 @@ namespace TutorMeFMI.App.Auth
 
         public void DeleteFile(string filePath)
         {
+            if(filePath == null) return;
             FileStorage.DeleteObject(bucketName, filePath);
         }
         public string GetDownloadUrl(string filePath)
