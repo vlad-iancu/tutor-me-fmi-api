@@ -68,7 +68,22 @@ namespace TutorMeFMI.App.Auth
             storage.UploadFile($"profile_photos/{user.Id}{extension}", newPhoto.OpenReadStream());
             using var database = new Database().GetQueryFactory();
             database.Query("user").Where("id", user.Id).Update(new {profilePath = $"profile_photos/{user.Id}{extension}"});
-            return Json(new {});
+            return Ok();
+        }
+        [HttpPut]
+        [Authorization]
+        public IActionResult UpdateName(User user,[FromBody] UpdateNameDTO newName)
+        {
+            using var database = new Database().GetQueryFactory();
+            var name = newName.name;
+            if (String.IsNullOrEmpty(name)) return BadRequest();
+            database.Query("user").Where("id", user.Id).Update(new {name});
+            return Ok();
         }
     }
+}
+
+public class UpdateNameDTO
+{
+    public string name { get; set; }
 }
